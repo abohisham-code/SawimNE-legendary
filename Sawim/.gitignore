@@ -1,0 +1,9 @@
+out/*
+gen/*
+.idea/*
+build/*
+.gradle/*
+*.iml
+keystore.properties
+fabric.properties
+SawimNE.apk

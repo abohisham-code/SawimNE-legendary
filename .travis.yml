@@ -1,0 +1,24 @@
+language: android
+jdk:
+  - oraclejdk8
+android:
+  components:
+    - platform-tools
+    - tools
+    - build-tools-27.0.3
+    - android-27
+    - extra-google-m2repository
+    - extra-android-m2repository
+  licenses:
+    - android-sdk-license-.*
+    - '.*intel.+'
+
+#notifications:
+#  email: false
+
+before_install:
+  # Fix Gradle output
+  - export TERM=dumb
+
+script:
+  - ./gradlew check

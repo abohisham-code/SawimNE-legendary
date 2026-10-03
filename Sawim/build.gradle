@@ -1,0 +1,68 @@
+apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
+
+dependencies {
+    implementation 'com.github.ge0rg:MemorizingTrustManager:b6a3d558e4'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.github.anrwatchdog:anrwatchdog:1.4.0'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+
+    //debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    //releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+}
+
+android {
+    namespace 'ru.sawim'
+    compileSdkVersion 34
+    defaultConfig {
+        applicationId "ru.sawim.jp"
+        minSdkVersion 21
+        targetSdkVersion 34
+        versionCode 84
+        versionName '1.3.8b-legendary'
+    }
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+        disable 'MissingTranslation'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    // signing config
+    if (file("keystore.properties").exists()) {
+        Properties props = new Properties()
+        props.load(new FileInputStream(file("keystore.properties")))
+
+        signingConfigs {
+            sawim {
+                storeFile file(props["key.store"])
+                storePassword props["key.store.password"]
+                keyAlias props["key.alias"]
+                keyPassword props["key.alias.password"]
+            }
+        }
+
+        buildTypes {
+            release {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-android.txt'
+                signingConfig signingConfigs.sawim
+            }
+        }
+    }
+    applicationVariants.all { variant ->
+        println "*********" + variant.description + "**********";
+        def apkName = "SawimNE.apk";
+        variant.outputs.all { output ->
+            outputFileName = new File(apkName)
+        }
+    }
+}
